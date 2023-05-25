@@ -1,51 +1,39 @@
 package com.example.listview;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity<ArticleViewHolder> extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private List<String> articles;
     private ArticleAdapter adapter;
     private DatabaseHelper databaseHelper;
     private Button returnButton;
-    private ImageButton add_Button;
+    private Button add_Button;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //recyclerView = findViewById(R.id.recyclerView);
-        Button add_Button = findViewById(R.id.addButton);
+        add_Button = findViewById(R.id.addButton);
+
         add_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,50 +41,40 @@ public class MainActivity<ArticleViewHolder> extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         databaseHelper = new DatabaseHelper(this);
-        private void loadArticles;() {
-            List<Article> articles = databaseHelper.getAllArticles();
-        };
 
+        // Chargement des articles depuis la base de données
+        List<Article> articles = loadArticles();
+
+        // Création de l'adaptateur et affectation à RecyclerView
+        articles = new ArrayList<>();
         adapter = new ArticleAdapter(articles);
         recyclerView.setAdapter(adapter);
 
-    private List<String> loadArticles() {
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        Cursor cursor = db.query(ArticleAdapter.ArticleEntry.TABLE_NAME, null, null, null, null, null, null);
-        List<String> articles = new ArrayList<>();
+    }
 
-        while (cursor.moveToNext()) {
-            int titreIndex = cursor.getColumnIndex(ArticleAdapter.ArticleEntry.COLUMN_TITRE);
-            int contenuIndex = cursor.getColumnIndex(ArticleAdapter.ArticleEntry.COLUMN_CONTENU);
-            int auteurIndex = cursor.getColumnIndex(ArticleAdapter.ArticleEntry.COLUMN_AUTEUR);
-            int dateIndex = cursor.getColumnIndex(ArticleAdapter.ArticleEntry.COLUMN_DATE);
+    private List<Article> loadArticles() {
+        // Charger les articles depuis la base de données ou autre source de données
+        List<Article> articles = databaseHelper.getAllArticles();
 
-            String titre = cursor.getString(titreIndex);
-            String contenu = cursor.getString(contenuIndex);
-            String auteur = cursor.getString(auteurIndex);
-            String date = cursor.getString(dateIndex);
-
-            String titreEnGras = "<b>" + titre + "</b>";
-            String article = titreEnGras + "<br>" + contenu + "<br>" + auteur + "<br>" + date;
-            articles.add(article);
-        }
-
-        cursor.close();
-        db.close();
+        // Mettre à jour l'affichage de la liste des articles
+        adapter.setArticles(articles);
+        adapter.notifyDataSetChanged();
 
         return articles;
     }
 
+
     // Classe ArticleAdapter
     private class ArticleAdapter extends RecyclerView.Adapter<ArticleViewHolder> {
 
-        private List<String> articles;
+        private List<Article> articles;
 
-        public ArticleAdapter(List<String> articles) {
+        public ArticleAdapter(List<Article> articles) {
             this.articles = articles;
         }
 
@@ -108,7 +86,7 @@ public class MainActivity<ArticleViewHolder> extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ArticleViewHolder holder, int position) {
-            String article = articles.get(position);
+            String article = String.valueOf(articles.get(position));
             holder.bind(article);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -128,12 +106,14 @@ public class MainActivity<ArticleViewHolder> extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-
         }
 
         @Override
         public int getItemCount() {
             return articles.size();
+        }
+
+        public void setArticles(List<Article> articles) {
         }
     }
 
@@ -157,6 +137,4 @@ public class MainActivity<ArticleViewHolder> extends AppCompatActivity {
             }
         }
     }
-
-
 }

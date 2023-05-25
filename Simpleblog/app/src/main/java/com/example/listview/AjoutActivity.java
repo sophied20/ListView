@@ -86,7 +86,7 @@ public class AjoutActivity extends AppCompatActivity {
                 Toast.makeText(this, "Article ajouté avec succès", Toast.LENGTH_SHORT).show();
                 titreArticleEditText.setText("");
                 contenuEditText.setText("");
-                auteurEditText.setText(""); // Réinitialiser le champ auteurEditText
+                auteurEditText.setText("");
             } else {
                 Toast.makeText(this, "Erreur lors de l'ajout de l'article", Toast.LENGTH_SHORT).show();
             }

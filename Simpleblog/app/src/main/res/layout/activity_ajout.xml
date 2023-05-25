@@ -16,39 +16,48 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="SimpleBlog"
-      android:textSize="56sp"
+      android:textSize="40sp"
       android:textStyle="bold"
-      android:layout_margin="20dp"/>
+      android:layout_margin="8dp"/>
 
   <TextView
       android:id="@+id/title2"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="Ajouter un article"
-      android:textSize="30sp"
+      android:textSize="20sp"
       android:textStyle="bold"
-      android:layout_margin="5dp"
+      android:layout_margin="3dp"
       android:textAlignment="center"/>
 
   <EditText
       android:id="@+id/ajout_title"
       android:layout_width="match_parent"
       android:layout_height="48dp"
-      android:layout_margin="20dp"
+      android:layout_margin="5dp"
       android:background="@drawable/edittext_bordures"
       android:hint="Titre"
       android:padding="8dp" />
+
+  <EditText
+      android:id="@+id/ajout_auteur"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:layout_margin="5dp"
+      android:background="@drawable/edittext_bordures"
+      android:hint="Auteur"
+      android:padding="8dp"/>
 
 
   <EditText
       android:id="@+id/ajout_contenu"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_margin="20dp"
+      android:layout_margin="10dp"
       android:background="@drawable/edittext_bordures"
       android:gravity="center"
       android:hint="Contenu"
-      android:padding="140dp" />
+      android:padding="105dp" />
 
 
   <RelativeLayout
@@ -60,7 +69,6 @@
         android:id="@+id/ajoute"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_margin="1dp"
         android:layout_centerHorizontal="true"
         android:backgroundTint="#000000"
         android:text="AJOUTER" />
